@@ -7,7 +7,6 @@ import com.mbest.modules.pvp.ReachDisplayModule;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.client.render.RenderTickCounter;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -17,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class HUDMixin {
 
     @Inject(method = "render", at = @At("TAIL"))
-    private void onRender(DrawContext ctx, RenderTickCounter tickCounter, CallbackInfo ci) {
+    private void onRender(DrawContext ctx, float tickDelta, CallbackInfo ci) {
         MinecraftClient mc = MinecraftClient.getInstance();
         if (mc.player == null || mc.currentScreen != null) return;
         if (MBestClient.moduleManager == null) return;
@@ -27,8 +26,7 @@ public class HUDMixin {
         int lineH = 10;
 
         if (MBestClient.moduleManager.fpsBoost.isEnabled()) {
-            String level = MBestClient.moduleManager.fpsBoost.getLevel().name();
-            ctx.drawTextWithShadow(mc.textRenderer, "FPS: " + mc.getCurrentFps() + " [" + level + "]", x, y, 0xFF00D4FF);
+            ctx.drawTextWithShadow(mc.textRenderer, "FPS: " + mc.getCurrentFps() + " [" + MBestClient.moduleManager.fpsBoost.getLevel().name() + "]", x, y, 0xFF00D4FF);
             y += lineH;
         }
 
