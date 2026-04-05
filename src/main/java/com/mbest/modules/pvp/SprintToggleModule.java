@@ -1,5 +1,3 @@
-src/main/java/com/mbest/modules/pvp/SprintToggleModule.java
-İçine:
 package com.mbest.modules.pvp;
 
 import com.mbest.modules.Module;
@@ -15,7 +13,6 @@ public class SprintToggleModule extends Module {
     public void onTick(MinecraftClient client) {
         if (!isEnabled()) return;
         if (client.player == null) return;
-
         if (client.options.forwardKey.isPressed()) {
             client.player.setSprinting(true);
         }
