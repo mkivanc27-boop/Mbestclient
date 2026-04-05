@@ -26,3 +26,4 @@ jobs:
         with:
           name: MBestClient-1.20.2
           path: build/libs/*[!-sources].jar
+
