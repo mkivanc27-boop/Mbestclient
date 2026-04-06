@@ -6,8 +6,7 @@ import net.minecraft.client.option.GraphicsMode;
 import net.minecraft.client.option.ParticlesMode;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.decoration.ArmorStandEntity;
-import net.minecraft.entity.item.FireworkRocketEntity;
+import net.minecraft.entity.projectile.FireworkRocketEntity;
 
 public class FPSBoostModule extends Module {
 
@@ -34,16 +33,11 @@ public class FPSBoostModule extends Module {
     @Override
     public void onTick(MinecraftClient client) {
         if (!isEnabled() || client.world == null) return;
-
         ClientWorld world = client.world;
-
-        // No weather
         if (level == BoostLevel.HIGH || level == BoostLevel.ULTRA) {
             world.setRainGradient(0);
             world.setThunderGradient(0);
         }
-
-        // Remove fireworks and armor stands far away (ULTRA only)
         if (level == BoostLevel.ULTRA) {
             for (Entity e : world.getEntities()) {
                 if (e instanceof FireworkRocketEntity) {
@@ -56,7 +50,6 @@ public class FPSBoostModule extends Module {
     private void apply() {
         MinecraftClient mc = MinecraftClient.getInstance();
         if (mc.options == null) return;
-
         switch (level) {
             case LOW -> {
                 mc.options.getViewDistance().setValue(6);
@@ -92,8 +85,8 @@ public class FPSBoostModule extends Module {
                 mc.options.getParticles().setValue(ParticlesMode.MINIMAL);
                 mc.options.getBiomeBlendRadius().setValue(0);
                 mc.options.getMipmapLevels().setValue(0);
-                mc.options.getMaxFps().setValue(260);
                 mc.options.getGamma().setValue(16.0);
+                mc.options.getMaxFps().setValue(260);
             }
         }
         mc.options.write();
