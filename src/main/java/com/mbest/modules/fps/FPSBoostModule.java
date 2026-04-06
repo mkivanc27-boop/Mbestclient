@@ -15,17 +15,24 @@ public class FPSBoostModule extends Module {
     }
 
     private BoostLevel level = BoostLevel.HIGH;
+    private boolean applied = false;
 
     public FPSBoostModule() {
         super("FPS Boost", "Maximum FPS optimization", Category.FPS);
     }
 
     @Override
-    public void onEnable() { apply(); }
+    public void onEnable() {
+        applied = false;
+        apply();
+    }
 
     public void setLevel(BoostLevel level) {
         this.level = level;
-        if (isEnabled()) apply();
+        if (isEnabled()) {
+            applied = false;
+            apply();
+        }
     }
 
     public BoostLevel getLevel() { return level; }
@@ -34,10 +41,14 @@ public class FPSBoostModule extends Module {
     public void onTick(MinecraftClient client) {
         if (!isEnabled() || client.world == null) return;
         ClientWorld world = client.world;
+
+        // No weather - sadece HIGH ve ULTRA
         if (level == BoostLevel.HIGH || level == BoostLevel.ULTRA) {
             world.setRainGradient(0);
             world.setThunderGradient(0);
         }
+
+        // Firework temizle - sadece ULTRA
         if (level == BoostLevel.ULTRA) {
             for (Entity e : world.getEntities()) {
                 if (e instanceof FireworkRocketEntity) {
@@ -50,9 +61,12 @@ public class FPSBoostModule extends Module {
     private void apply() {
         MinecraftClient mc = MinecraftClient.getInstance();
         if (mc.options == null) return;
+
+        // Sadece gerçekten değişmesi gereken ayarları değiştir
         switch (level) {
             case LOW -> {
-                mc.options.getViewDistance().setValue(6);
+                if ((int)mc.options.getViewDistance().getValue() != 6)
+                    mc.options.getViewDistance().setValue(6);
                 mc.options.getGraphicsMode().setValue(GraphicsMode.FAST);
                 mc.options.getEntityDistanceScaling().setValue(0.75);
                 mc.options.getParticles().setValue(ParticlesMode.DECREASED);
@@ -61,7 +75,8 @@ public class FPSBoostModule extends Module {
                 mc.options.getMaxFps().setValue(260);
             }
             case MEDIUM -> {
-                mc.options.getViewDistance().setValue(5);
+                if ((int)mc.options.getViewDistance().getValue() != 5)
+                    mc.options.getViewDistance().setValue(5);
                 mc.options.getGraphicsMode().setValue(GraphicsMode.FAST);
                 mc.options.getEntityDistanceScaling().setValue(0.5);
                 mc.options.getParticles().setValue(ParticlesMode.MINIMAL);
@@ -70,7 +85,8 @@ public class FPSBoostModule extends Module {
                 mc.options.getMaxFps().setValue(260);
             }
             case HIGH -> {
-                mc.options.getViewDistance().setValue(4);
+                if ((int)mc.options.getViewDistance().getValue() != 4)
+                    mc.options.getViewDistance().setValue(4);
                 mc.options.getGraphicsMode().setValue(GraphicsMode.FAST);
                 mc.options.getEntityDistanceScaling().setValue(0.25);
                 mc.options.getParticles().setValue(ParticlesMode.MINIMAL);
@@ -79,7 +95,8 @@ public class FPSBoostModule extends Module {
                 mc.options.getMaxFps().setValue(260);
             }
             case ULTRA -> {
-                mc.options.getViewDistance().setValue(2);
+                if ((int)mc.options.getViewDistance().getValue() != 2)
+                    mc.options.getViewDistance().setValue(2);
                 mc.options.getGraphicsMode().setValue(GraphicsMode.FAST);
                 mc.options.getEntityDistanceScaling().setValue(0.1);
                 mc.options.getParticles().setValue(ParticlesMode.MINIMAL);
