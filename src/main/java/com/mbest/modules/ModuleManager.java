@@ -3,6 +3,8 @@ package com.mbest.modules;
 import com.mbest.modules.fps.FPSBoostModule;
 import com.mbest.modules.fps.NoParticlesModule;
 import com.mbest.modules.pvp.*;
+import com.mbest.modules.visual.FullbrightModule;
+import com.mbest.modules.visual.ZoomModule;
 import net.minecraft.client.MinecraftClient;
 
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ public class ModuleManager {
     public final SprintToggleModule sprintToggle;
     public final ArmorHUDModule armorHUD;
     public final ReachDisplayModule reachDisplay;
+    public final FullbrightModule fullbright;
+    public final ZoomModule zoom;
 
     public ModuleManager() {
         fpsBoost     = register(new FPSBoostModule());
@@ -25,6 +29,8 @@ public class ModuleManager {
         sprintToggle = register(new SprintToggleModule());
         armorHUD     = register(new ArmorHUDModule());
         reachDisplay = register(new ReachDisplayModule());
+        fullbright   = register(new FullbrightModule());
+        zoom         = register(new ZoomModule());
     }
 
     private <T extends Module> T register(T module) {
